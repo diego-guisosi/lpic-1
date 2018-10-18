@@ -1,0 +1,9 @@
+Physical and Pseudo Terminals
+
+	CTRL + ALT + Fn (where n in 1..7) -> change to physical terminals. 7th is the graphical one. 
+	tty 				  -> shows the current physical or pseudo terminal
+	who 				  -> shows all terminals 
+	w 				  -> presents a more detailed view about the terminals than 'who'
+	sudo chvt n (where n in 1..7) 	  -> change to physical terminals.
+
+	OBS.: ssh opens pseudo terminals
