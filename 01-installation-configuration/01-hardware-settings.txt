@@ -1,0 +1,32 @@
+Physical and Pseudo Terminals
+
+	CTRL + ALT + Fn (where n in 1..7) -> change to physical terminals. 7th is the graphical one. 
+	tty 				  -> shows the current physical or pseudo terminal
+	who 				  -> shows all terminals 
+	w 				  -> presents a more detailed view about the terminals than 'who'
+	sudo chvt n (where n in 1..7) 	  -> change to physical terminals.
+
+	OBS.: ssh opens pseudo terminals
+
+
+Resource Usage
+
+	uptime	-> shows how much time the system has been running
+	free	-> presents how much memory is free
+	lsusb	-> list devices connected to usb bus
+	lsscsi	-> list devices connected to scsi bus
+	lspci	-> list devices connected to pci bus
+	uname	-> shows kernel information
+	hwinfo	-> shows information about all hardware
+
+	OBS.: 'which' can be used when it is necessary to know the complete path for a given command
+
+
+Pseudo File Systems (in-memory information about the hardware)
+
+	/sys	-> contains metadata about the devices
+	/dev	-> contains links to physical devices thenselfs
+	/proc	-> information about the system
+
+	OBS.: /proc/interrupts shows runtime interrupts happening on OS
+	      most commands extract data from these pseudo file systems
