@@ -1,0 +1,78 @@
+Shutting down
+
+	shutdown now					-> power off the system right after the command is sent
+	shutdown +5 "Shutting down in 5 minutes"	-> power off the system 5 minutes after the command is sent and broadcasts the specified message to all logged users
+	shutdown 15:30 "Shutting down at 15:30"		-> power off the system at the specified time and brodcasts the specified message to all logged users
+	shutdown -r					-> reboot the system
+	shutdown -h					-> is the same as power off as far as shutdown is concerned
+	shutdown -c					-> cancels an scheduled shutdown event
+	runlevel					-> shows the current run level
+	who -r						-> is equivalent to runlevel
+	init N (where N in 1..6)			-> switch the runlevel (runlevel 6 is the same as reboot)
+
+	Obs.: Run shutdown in the background using & after the command, so that the control of the terminal can get back to the user.
+	      "jobs" lists commands running in background
+	      "fg" can be used to get the command back to foreground
+
+
+Linux Boot Procedure
+
+	01 - Power On self-test
+		BIOS checks that the hardware is ok and locates the bootable device
+	02 - Locate MBR
+		The system reads the master boot record from the first 512 bytes of the bootable device and locates the boot loader
+	03 - Boot Loader (e.g.: GRUB)
+		Boot Loader provides a list of bootable operating systems, pointing to the location of the bootable Linux and the kernel and Ram Disk
+	04 - Kernel and Ram Disk
+		Boot loader loads the kernel (OS itself) and the Ram Disk (initrd contains the drivers required by the kernel to access the root file system)
+	     	Once the kernel can read the root file system, it's possible to read the configuration at the /etc directory and the services 
+		(usually located on /sbin or /usr/sbin directories)
+	05 - Init daemon start
+		Kernel initiates the first service which is the initialization daemon (the init process, which has always the process ID 1 
+		and is located at the top of the process list)
+		The init process will start the child processes, which are all the other necessary services (secure shell daemons, tty consoles etc.), 
+		according to the runlevel indicated in the initialization defaults (e.g: 3 for servers or 5 for desktops)
+
+
+Boot Loaders
+
+	Small program that loads the operating system into the computer's RAM when the system is booted
+
+	GRUB 		-> Grand Unified Boot Loader (legacy)
+	GRUB2		-> Grand Unified Boot Loader
+	EXTLINUX	-> Used for VMs (comes from the syslinux family: syslinux used to load boot drives
+									 isolinux used to boot dvds and cds
+									 pxelinux used to network boot
+									 extlinux used for standard hard drives)
+	LILO		-> Linux Loader (used before GRUB)
+
+	OBS.: For GRUB: It's possible to restore the MBR with the command grub-install
+			GRUB menu is located on /boot/grub/menu.lst
+
+
+Run Levels (init N)
+
+	Target states for the init daemon to enter:
+
+	0	Halt (shuts the system down)
+	1	Single User (root only)
+	2	Multi User (no network services / GUI)
+	3	Multi User (no GUI)
+	5	Full Multi-User with GUI)
+	6	Reboot
+
+	OBS.: The default run level is indicated in 
+		SysV init scripts: /etc/inittab
+		Upstart: /etc/init/rc-sysinit.conf (env DEFAULT_RUNLEVEL=5)
+
+
+Services
+
+	service NAME ACTION (where ACTION in STOP,START,RESTART)	-> apply the action to a given service
+	chkconfig NAME on/off (for Red Hat, SUSE and CentOS)		-> determines if the service must be started in the runlevel being changed
+	update-rc.d NAME defaults/remove (for Debian, Ubuntu)		-> determines if the service must be started in the runlevel being changed
+
+	OBS.: update-rc.d updates System-V init script links /etc/rcRUNLEVEL.d/NNname whose target is the script /etc/init.d/NAME. These links are
+	      run by "init" when it changes runlevels (they are usually used to start and stop services such as daemons. RUNLEVEL is one of the
+	      runlevels supported by "init", namely, 0123456789S, and NN is the two-digit sequence number that determines where in the sequence 
+	      "init" will run the scripts 
