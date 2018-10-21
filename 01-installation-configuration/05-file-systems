@@ -1,0 +1,63 @@
+Disk types (partition table types)
+
+	DOS - MBR (Master Boot Record) partition table	-> supports up to 2TB per partition
+							-> primary partitions: maximum of 4
+							-> logical (extended) partitions: maximum of 15
+
+	GPT - GUID partition table			-> supports up to 8 ZB
+							-> partitions: maximum of 128
+
+	File Systems: ext2, ext3, ext4, ReiserFS, XFS etc.
+
+			
+Creating/managing partitions
+
+	lsblk				-> lists block devices in a tree-like format
+	fdisk -l			-> lists the devices
+	parted DEVICE print		-> shows information about the provided device. For instance, /dev/sda
+	parted DEVICE			-> opens an interactive shell
+	> mklabel PART_TYPE		-> creates/modifies a partition table in the selected device according to the provided partition table type
+	parted DEVICE mklabel PART_TYPE -> creates/modifies a partition table in the selected device according to the provided partition table type
+	fdisk DEVICE			-> opens an interactive shell
+	> n				-> starts "new partition" wizard
+	> w				-> writes the modification of the added partition
+	gdisk DEVICE			-> opens an interactive shell to manage GPT disks partition table
+	> n				-> starts "new partition" wizard
+	> w				-> writes the modification of the added partition
+
+	Obs.: ls -l /dev/sda will present the file type as 'b', which means 'block'
+	      sda, sdb... first two characters means "scsi device"
+
+
+File Systems
+
+	ext4	-> general purposed, better suited when there is a misc of file sizes (some small, others large, some regular etc.). Can cause fragmentation
+		   it's a journal file system that mantains a transaction log, which will only contain the files that were open during a system crash or reboot
+		   these will be the files that must be checked for integrity
+
+	XFS	-> Developed by Sun for SGI systems and 3D handling, it's better suited for large files that requires constant access (24x7)
+
+
+Creating/managing file systems
+
+	mkfs -t TYPE DEVICE		 -> build file systems into devices, usually a hard disk partition, according to the file system type provided
+	mkfs.<type> DEVICE		 -> there are commands to specific file systems, that removes the need of providing the file system type
+					    e.g: mkfs.ext4 DEVICE
+	mkfs.<type> -b BLOCK_SIZE DEVICE -> build the file system with the specified block size
+	mkfs.<type> -f DEVICE		 -> build the file system overwriting an existing one
+
+
+Mounting file systems
+
+	mount				 		-> lists all mounted file systems
+	mount -t FILE_SYS_TYPE DEVICE MOUNT_POINT 	-> mounts the file system of the given type and device into the mount point directory
+	mount -o					-> accepts a comma-separated list of options (like noexec,acl etc.)
+	umount TARGET_DIR				-> unmounts the file system based on the target directory
+	umount DEVICE					-> unmounts the file system based on the device
+
+	Obs.: /etc/fstab is read at boot type to auto-mount the configured file systems
+	      after this file is modified, it's possible to apply the configuration without restarting the system, running "mount -a"
+	      
+	      "blkid DEVICE" returns the UUID of the device that can be used on /etc/fstab as the value of the file system field
+	      
+              with vim, we can use :r ! COMMAND to insert the output of the command into the file being edited
