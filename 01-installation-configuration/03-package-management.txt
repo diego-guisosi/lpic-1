@@ -1,0 +1,68 @@
+Package Managers
+	rpm
+		Red Hat / Fedora / CentOS
+		.rpm files and software management
+		YUM repositories
+	
+	dpkg
+		Debian / Ubuntu
+		.deb files and dpkg software management
+		dpkg-reconfigure
+		apt repositories
+
+	rpm
+		SUSE / openSUSE
+		.rpm files and software management
+		zypper repositories
+	
+
+RPM Package Manager
+
+	rpm -qa (query all)			-> list all installed packages
+	rpm -qp PACKAGE_FILE (query package)	-> list the contents of provided package file
+	rpm -qi PACKAGE (query information)	-> shows information about the given package name. It's not necessary to provide the full name
+	rpm -qf FILE (query file)		-> shows the package from which the file came from
+	rpm -i (install)			-> install the given package
+	rpm -e (erase)				-> erase the given package
+
+
+YUM Repository Manager Basics
+
+	yum install PACKAGE_NAME		-> install the given package and all dependencies. It's not necessary to provide the full name
+	yum remove PACKAGE_NAME			-> removes the package
+	yum info PACKAGE_NAME			-> shows information about the package
+	yum list installed			-> list only installed package from the repositories
+	yum search PACKAGE_NAME			-> search the repositories for the package
+	yum grouplist				-> list groups of related packages to installation
+
+
+YUM shell
+	
+	yum shell				-> enters in shell mode. Each typed command is added to a transaction
+	> ts					-> lists commands binded to the transaction
+	> run					-> run the transaction
+	yum shell FILE_WITH_COMMANDS		-> a file with commands can be provided as parameter
+
+
+DPKG Package Manager
+
+	dpkg -l					-> lists all installed packages
+	dpkg -L PACKAGE_NAME			-> lists the files related to the provided package name
+	dpkg -s PACKAGE_NAME			-> shows status information about the package
+	dpkg -S FILE				-> presents the source package of the provided file
+	dpkg-reconfigure PACKAGE_NAME		-> shows the configuration wizard of a installed service for reconfiguration
+
+
+APT Repository Manager Basics
+
+	apt-get update				-> updates the index of the repositories
+	apt-get install PACKAGE_NAME		-> install the provided package
+	apt-get remove PACKAGE_NAME		-> remove the provided package
+	apt-cache search PACKAGE_NAME		-> query the apt cache (/var/cache/apt/archives) for the given package
+
+
+ZYPPER Repository Manager Basics
+
+	zypper se PACKAGE_NAME			-> searches the repositories for the given package
+	zypper in PACKAGE_NAME			-> installs the package provided
+	zyyper rm PACKAGE_NAME			-> removes the package

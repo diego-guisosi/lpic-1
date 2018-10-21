@@ -1,0 +1,26 @@
+Standard modules *.so (libs) - used by user space programs.
+
+	ldd PROGRAM_PATH		-> shows the modules that the program depends on
+					   this modules can be loaded in memory or available in the filesystem
+					   the link for the modules can be found on /etc/ld.so.conf
+	ldconfig			-> reloads the modules, dynamically configuring the bindings. Can be used when a lib is modified
+	ldconfig -p			-> prints all the modules we can find and all the paths that are referenced
+
+	Obs.: It's possible to overwrite installed libraries defining the variable LD_LIBRARY_PATH.
+	      Modules present on this path will take precedence over the default modules.
+	      'export' can be used to define the variable
+	      'unset' can be used to remove the variable
+	      '!' can be used to query the history of commands. For instance: !ldd runs the last command starting with ldd
+									      !$ provides the last argument passed to a command
+
+
+Kernel Modules *.ko (drivers) - used by the kernel or privileged programs
+
+	lsmod				-> lists the modules currently loaded. The source of this list is /proc/modules
+	modprobe MODULE			-> (un)loads a module
+	modinfo MODULE			-> shows information about the module, including the parameters that can be passed to the drivers
+	
+	Obs.: /etc/modprobe.d contains configuration files that can be used to indicate which parameters should be passed to the modules (drivers)
+	      when loaded
+	      /etc/modprobe.d/blacklist.conf can be used to configure which drivers should never be loaded. Good place to solve drivers conflicts.
+	      These modules (drivers) are loaded automatically, when hardwares that depends on them are detected
