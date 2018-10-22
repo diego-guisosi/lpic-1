@@ -1,0 +1,36 @@
+Swap file systems
+
+	Disk Partition (Swap Partition)
+	Swap File
+
+
+Managing swap partitions
+
+	swapon -s			-> shows swap usage summary. Equivalent to /proc/swaps
+	free				-> shows memory information, which includes swap usage
+	gdisk DEVICE			-> can be used to create the swap partition (fdisk or parted could be used as well)
+	> n				-> creates a new partition into the selected device
+	> Hex Code or GUID		-> 8200 (Linux Swap partition type)
+	> w				-> write changes to the partition table
+	mkwsap DEVICE			-> builds the swap file system
+	swapon DEVICE			-> enables the swap system
+	swapoff DEVICE			-> disables the swap system
+	swapon -p PRIORITY DEVICE	-> enables the swap device with the given priority
+					   partition with highest priority is used first. When it reaches the maximum memory, the next partition
+					   with highest priority is used
+					   if there are partitions with the same priority, they are used simultaneously
+
+	OBS.: If the creation of the partition requires reboot, "partprobe DEVICE" can be used instead, forcing the sincronization of the created
+	      partition and the memory
+
+	      /proc/partitions can be queried to list partition information
+
+	      To auto-mount the swap file system during boot time, it's necessary to include the partition configuration into /etc/fstab
+	      "swapon -a" acts like "mount -a", but for swap file system, mounting unmounted file system defined on /etc/fstab
+
+
+Managing swap files (can be used when swap need is temporary, like when more memory is necessary to finish an specific project)
+
+	dd if=/dev/zero of=OUT_FILE_PATH count=1000 bs=1024	-> creates image file to the swap file system
+	mkswap OUT_FILE_PATH					-> build the swap file system as the output file
+	swapon OUT_FILE_PATH					-> mounts the swap file system
