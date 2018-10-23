@@ -1,0 +1,25 @@
+Tools
+
+	df -hT				 	-> shows file system usage in human readable format, including the type of the file system
+	df -hlT				 	-> hides mapped (network) file systems. Displays only local file systems
+	du -h DIR			 	-> shows disk usage of the provided directory and it subdirectories in human readable format
+	du -hs DIR			 	-> shows disk usage only of the provided directory. Does not display subdirectories usage
+	dump2efs DEVICE 		 	-> dump information about extN file systems
+	dd OPERAND...			 	-> copy file, according to the provided operands
+
+			   		 	dd if=/dev/sda of=/tmp/master_boot_record count=1 bs=512
+							copies first 512 bytes (master boot record) of the device /dev/sda to /tmp/master_boot_record
+			   		 	dd if=/dev/zero of=/dev/sda count=1 bs=512
+							replaces first 512 bytes (master boot record) with zeros (removes MBR)
+							if fdisk -l /dev/sda is executed after that, the partition table will not be presented
+			   		 	dd if=/tmp/master_boot_record of=/dev/sda count=1 bs=512
+							copies the master boot record back to the device /dev/sda
+							if fdisk -l /dev/sda is executed after that, the partition table is presented again
+
+	tune2fs				 	-> set parameters on extN file systems
+	debugfs				 	-> file system debugger. Can be used, among other things, to possibly undelete files
+	extundelete --inode INODE DEVICE 	-> shows information about the inode of the given device
+	extundelete --restore-file FILE DEVICE	-> restore the deleted FILE of the given DEVICE
+						   file path must be relative to the mount point
+
+	OBS.: "ls -li" can be used to list the inode of the files 
