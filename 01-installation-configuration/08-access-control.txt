@@ -1,0 +1,69 @@
+File System Permissions
+
+	Target     ->	User(u)	Group(g) Others(o)
+	Permissions->	rwx	rw-	 r--		(r=read, w=write, x=execution)
+	Octal      ->	7	6	 4
+
+	id				-> lists the groups of the current user
+	ls -l				-> presents a long listing, containing the file permissions
+	stat				-> presents more detailed information about the file permissions (inode)
+	touch FILE			-> creates a new empty file with default file permissions
+	umask mode			-> changes the default file permissions
+	
+	chmod OCTAL FILE		-> changes the file permission according to the provided octal representation
+				   	   e.g: "chmod 777 file.txt" gives read, write and execucion permission to all targets
+	chmod TARGET=permissions FILE	-> changes the file permission according to the target and permissions provided
+					   e.g: "chmod u=rwx,g=rwx,o=rwx file.txt" gives all permissions to everybody
+	chmod +PERMISSIONS FILE		-> changes the file permission of all targets according to the provided permissions
+					   e.g: "chmod +rw file.txt" gives read and write permissions to everybody
+	chmod o+t DIRECTORY		-> gives a special permission to directories called sticky bit. (like /tmp directory)
+					   with this permission, users can only delete files within the directory that they are the owners of.
+	
+	chgrp GROUP FILE		-> changes the group of the file (must be root)
+
+	Obs.: "mkdir -p data/dir{1,2,3}" brace brackets can be used to create more than one directory at once with mkdir
+	      "ls -ld DIR" list the provided directory instead of the directory content
+	      
+	      Permissions on directories:
+			execute -> enables or disables access to the directory
+			write   -> enables or disables creation/deletion of files inside the directory
+
+
+Links
+
+	"File names" links to "Inodes", which are entries on the file system that contains meta-data about the file (including where
+	the file is physically stored in the disk) 
+
+		File name -> Inode (meta-data) -> Data
+
+	Every file has at least one file name. If a file has more than one name, than the file has hard links
+
+		"ls -l" shows the link count as well as "stat"
+		link count of a directory = quantity of subdirectories + 2 [current directory (.) and parent directory (..)]
+
+	Symbolic Links (Soft links) are a completelly separate file and inode, whose data points to the target file name within the file system 
+	It's similar to .lnk Windows files
+	
+		Symbolic link -> Inode (meta-data) -> Data -> File name -> Inode (meta-data) -> Data
+
+	ln TARGET LINK		-> creates a hard link to the provided target
+				   use "ls -li" to verify that both file names (target and link) points to the same inode
+
+	ln -s TARGET LINK	-> creates a symbolic link to the provided target
+				   use "ls -li" to verify that target and link are completely different files, each one having its own inode
+
+	Summary: 
+		with hard links, the same file can have multiple file names
+		with symbolic links, the file data is a pointer to a another file's name
+
+
+Quotas
+
+	Quotas can be applied on directories 
+		to restrict:
+			User space - size
+			Inodes - quantity of entries (files)
+		to:
+			users
+			user groups
+			entire file systems
