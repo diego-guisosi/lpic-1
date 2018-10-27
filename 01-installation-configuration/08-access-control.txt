@@ -59,11 +59,31 @@ Links
 
 Quotas
 
-	Quotas can be applied on directories 
+	Quotas can be enabled as mount options
 		to restrict:
 			User space - size
 			Inodes - quantity of entries (files)
 		to:
-			users
-			user groups
-			entire file systems
+			users		(usrquota)
+			user groups	(grpquota)
+		when:
+			the file system is mounted
+
+	mount -o remount MOUNT_POINT			-> remounts a file system
+							   if /etc/fstab is edit so that quota options are configured,
+							   this command can remount the file system to apply the configuration
+	quotacheck -cu MOUNT_POINT			-> creates aquota.user file (quota db) on the mount point
+	repquota -auv					-> reads quota files and displays its contents
+	quotaon, quotaoff DEVICE			-> enables/disables quota usage on device
+							   quotaon is executed automatically during system boot
+	edquota -u USER					-> opens quota configuration to the given user with the default text editor
+							   soft and hard limits (to user spaces and inodes) can be configured with this command
+	setquota -u USER SOFT_BLK_SIZE HARD_BKL_SIZE 
+		 SOFT_INODE HARD_INODE DEVICE		-> edits quota configuration file with the provided parameters
+
+	edquota -t					-> opens quota configuration so that it is possible to edit the period on which
+							   soft limits can be exceeded
+
+	Obs.: "vim +?PATTERN FILE_PATH" opens the provided file with the cursor pointing to the line that matches the pattern
+	      "soft limits" can be exceeded only for 7 days (default configuration)
+	      "hard limits" cannot be exceeded
