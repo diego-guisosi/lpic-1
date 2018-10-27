@@ -1,0 +1,53 @@
+Displaying small files contents
+
+	cat FILE		-> echoes FILE content to standard output
+	cat FILE1 FILE2		-> concatenates FILE1 and FILE2 so that their contents are presented together
+	cat -vet FILE		-> displays hidden characteres within FILE
+				   $ symbol represents a new line character for unix files
+				   ^M$ symbol represents a new line character for windows files
+
+	tac FILE		-> behaves similar to car but displays the file content from bottom to up
+
+	Obs.: "dos2unix" can be used to convert dos special characters to linux special characters
+	      "cat" is commonly used to display linux runtime data stored on /proc. e.g:
+			cat /proc/sys/net/ipv4/ip_forward
+	      "echo" is usually used to modify linux runtime data stored on /proc. e.g:
+			echo 1 > /proc/sys/net/ipv4/ip_forward
+
+
+Reading files from the top or the bottom
+
+	head FILE		-> Displays top 10 lines of the provided file
+	head -n 2 FILE		-> Displays top 02 lines of the provided file
+	tail FILE		-> Displays bottom 10 lines of the provided file
+	tail -n 2 FILE		-> Displays bottom 02 lines of the provided file
+				-> Some unix systems accept ommiting "n". E.g: tail -2 FILE
+	tail -f FILE		-> Follows the end of the file, so that updates are displayed in runtime
+				   Usually used when dealing with log files, like /var/log/messages
+
+
+Paging data
+
+	more FILE		-> Opens program to paging forward the giving file by hitting "spacebar key"
+	> q			-> Closes the paging
+
+	less FILE		-> Opens program that can page forward or backward the giving file (with PgUp and PgDown)
+	> nG			-> Jumps the cursor to the "n" line
+	> /TEXT			-> Jump the cursor to the first occurence of the word TEXT in the file
+	  n			-> "n" can be pressed to go to next occurences
+	  N			-> "N" can be pressed to go to previous occurrences
+
+
+Filtering data
+
+	cut -f1,2 FILE		-> Uses TAB as delimiter so that only fields 1 and 2 are presented
+	cut -f1,2 -d":" FILE	-> Uses ":" as delimiter so that only fields 1 and 2 are presented
+
+
+Sorting data
+
+	sort FILE				-> Sorts the provided file by the first character of each line
+	sort -r FILE				-> Reverse sorts the provided file by the first character of each line
+	sort -k COLUMN -t DELIMITER FILE	-> Sorts the FILE by the provided COLUMN (using DELIMITER to identify each column)
+	sort -n -k COLUMN -t DELIMITER FILE	-> Sorts the FILE by the provided numeric column
+	sort -u FILE				-> Sorts the FILE content, removing the duplicates (u = unique)
