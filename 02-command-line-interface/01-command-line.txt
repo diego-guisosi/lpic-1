@@ -1,0 +1,57 @@
+Terminal general information
+
+	Physical Terminals		-> consoles provided by the operating system to physically logged users
+					   CTRL + ALT + Fn (F1 to F7) can be used to change the physical terminals
+					   chvt N (where n in 1..7) also can be used to change the physical terminals
+					   "exit, logout or CTRL + D" can be used to logout from the physical terminals
+					   "tty" displays the console the user is currently logged in
+					   "who" displays which user is connected to each console device
+					   physical terminals are represented as OS devices on /dev/ttyN (where N is the number of the terminal)
+
+	Pseudo Terminal			-> console provided to graphic environments or remote connections
+					   "tty and who" commands work exactly the same with virtual consoles
+					   "$SSH_" environment variables can be queried from the client side for information about the virtual terminals
+					   virtual terminals are represented as OS devices on /dev/pts/N (where N is the number of the terminal)
+	
+
+Remote connection protocols
+
+	Telnet				-> Unencrypted (credentials could be intercepted)
+					   uses TCP port 23
+					   included software on most OS
+
+	SSH (secure shell)		-> Encrypted
+					   uses TCP port 22
+					   client not included on Windows, but can be installed as free third party software (like PuTTY)
+
+
+Available Shells
+
+	chsh -l				-> lists available shells
+					   if this command is not available, cat /etc/shells
+
+	Bourne-Again Shell (bash)	-> default shell on most linux and macOS
+	Korn Shell (ksh)		-> written by David Korn (based on Bourne Shell)
+	Z Shell (zsh)			-> modern shell that is backward compatible with bash
+					   prompt command lists possible themes to apply
+
+	Obs.: Default shell can be changed on the account database file (usually /etc/passwd)
+	      Change the path to the shell in front of the user name
+
+
+Bash History
+
+	~/.bash_history			-> mantains command history for each user
+	history				-> displays ~/.bash_history content
+	!TEXT				-> run the last command starting with TEXT
+	!LINE				-> run the command of the LINE provided on ~/.bash_history
+	!$				-> represents the last argument
+					   if a second command needs to receive the same argument of the previous one,
+					   this command may be used as a shortcut (e.g: mkdir my_dir; cd !$)
+	!?TEXT				-> run the last command containing TEXT
+	CTRL + r			-> reverse searches for the input. Pressing ESC, it's possible to edit. Pressing ENTER, the command is executed
+	history -c			-> clears the history (command only)
+	history -r			-> reloads ~/.bash_history into history command memory
+
+	Obs.: if history -w is executed after a history -c, then the ~/.bash_history file is also cleared, since -w writes in-memory history to the file
+	      history -a appends the in-memory history to the file
