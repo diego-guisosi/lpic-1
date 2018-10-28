@@ -1,0 +1,82 @@
+Copying/moving files
+
+	cp SOURCE TARGET		-> Copies source file to TARGET, which can be a directory or a file name
+	cp -i SOURCE TARGET		-> Copies source file to TARGET. If the file already exists on TARGET, a confirmation message is prompted
+	cp -a SOURCE TARGET		-> Copies source file to TARGET, mantaining file permissions and ownership.
+					   Useful option when copying files as root.
+	cp -R SOURCE TARGET		-> Recursively copies source directory to target directory, copying all of subdirectories contents.
+
+	mv SOURCE TARGET		-> Moves source file to TARGET. If target is a file name within the same directory, source file is renamed to target
+
+	Obs.: GLOB pattern can be used to copy or move files.
+		file* = file followed by 0 or any amount of characters
+		file? = file followed by a single character
+
+
+Removing files and directories
+
+	rm FILE			-> Removes the provided file
+	rm -i FILE		-> Removes in interactive mode, displaying confirmation messages for each file to be deleted
+	rm -rf DIR		-> Removes the provided directory and its contents
+	
+	rmdir DIR		-> Removes DIR if it is empty
+
+
+Directory listings
+
+	ls			-> Lists current directory
+	ls DIR			-> Lists content of DIR
+	ls -d DIR		-> Lists DIR without presenting its contents
+	ls -l DIR		-> Lists content of DIR in long list format (presents file permissions, ownership, target of symbolic links etc.)
+	ls -F DIR		-> Lists content of DIR with an indicator appended to the file name determining the kind of file
+	ls -lt DIR		-> Lists content of DIR by modification time
+	ls -ltr DIR		-> Lists content of DIR by modification time in reverse order
+
+	Obs.: readlink SYMBOLIC_LINK can be used to display the target of the symbolic link
+	      
+	     "ls" is usually configured with alias, so that the prefered options are always executed
+	      e.g: alias ls='ls --color=auto'
+	     
+	     "alias" without parameters lists configured aliases
+
+	     \COMMAND runs the original COMMAND, even if there is an alias configured
+
+
+Imaging disks (duplicate disks)
+
+	dd if=/dev/sda of=/root/mbr count=1 bs=512	-> copies first 512 bytes from /dev/sda (Master Boot Record) to /root/mbr
+	dd if=/dev/sda1 of=/root/boot.img		-> copies entire /dev/sda1 partition to the image file /root/boot.img
+
+
+Synchronizing directories
+
+	rsync -av SOURCE TARGET				-> Synchonizes files from SOURCE to TARGET, copying only the files not already present on TARGET.
+							   -a (archive mode) keeps permissions and ownership of the files
+							   -v (verbose)
+	rsync -av USER@HOST:SOURCE TARGET		-> The same as above, but synchronizes remote directories with local directories
+	rsync -av SOURCE USER@HOST:TARGET		-> The same as above, but synchronizes local directories with remote directories
+
+
+Archiving files
+
+	tar -cvf TARGET_FILE SOURCE_DIR			-> Creates an archive file TARGET_FILE containing the contents of SOURCE_DIR
+	tar -czvf TARGET_FILE SOURCE_DIR		-> Creates a gzip compressed archive file containing the contents of SOURCE_DIR
+	tar -cjvf TARGET_FILE SOURCE_DIR		-> Creates a bzip2 compressed archive file containing the contents of SOURCE_DIR
+
+	file FILE					-> determines the file type. Can be used to verify which compression algorithm was used with tar
+
+	tar -tvf FILE					-> lists contents of the archive
+
+	tar -xvf FILE					-> expands the archive, bringing its contents back to the current directory
+	tar -xzvf FILE					-> expands gzip compressed archive
+	tar -xjvf FILE					-> expands bzip2 compressed archive
+
+
+Searching files
+
+	find DIR -newer FILE			-> searches for files from DIR newer than FILE
+	find DIR -size +138k			-> searches for files from DIR whose size is greater than 138k
+	find DIR -newer FILE -type f -delete    -> deletes regular files from DIR newer than FILE
+	find DIR -newer FILE -exec ls -lh {} \;	-> lists in human readable format files from DIR newer than FILE
+						   {} is a placeholder for the matched result
+						   \; represents the end of the instruction (line)
