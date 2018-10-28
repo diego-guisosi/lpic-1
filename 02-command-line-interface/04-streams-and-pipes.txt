@@ -1,0 +1,38 @@
+Redirecting output
+
+	COMMAND >  FILE		-> Redirects standard output to FILE. If FILE does not exists, it creates one. If FILE already exists, it is overwritten
+	COMMAND >> FILE		-> Redirects standard output to FILE. If FILE does not exists, it creates one. If FILE already exists, the output is appended
+	
+	COMMAND >| FILE		-> Acts as "COMMAND > FILE", but does not respect noclobber. If FILE already exists, it is overwritten.
+
+	COMMAND <  FILE		-> Read from file
+
+	COMMAND 1> FILE		-> The same as "COMMAND > FILE". Number 1 indicates that standard output should be redirected
+	COMMAND 2> FILE		-> Redirects standard error to FILE
+	COMMAND > FILE 2>&1	-> Redirects standard error to standard output, which will then be redirected to FILE
+
+	COMMAND 2> /dev/null	-> Redirects standard error to null device and presents only standard output.
+
+	COMMAND | tee FILE	-> Redirects output to FILE and to the screen at the same time
+
+
+Noclobber
+
+	set -o			-> Lists shell options
+	set -o OPTION		-> Sets shell options
+	set -o noclobber	-> Acts as a safety switch. If enabled, it is not possible overwriting files unless ">|" is used
+	COMMAND >| FILE         -> Acts as "COMMAND > FILE", but does not respect noclobber. If FILE already exists, it is overwritten.
+
+
+Redirecting input
+
+	COMMAND <  FILE		-> Reads from FILE and redirect it as input of COMMAND
+
+
+Pipelines
+
+	|			-> Creates an Un-named pipeline. Short-lived. Destroyed as soon as the pipeline is not necessary
+	mkfifo PIPE_NAME	-> Creates a named pipeline. Can be used for inter-process communication
+				   	Process 01: ls -l > PIPE_NAME (redirects output to PIPE_NAME, which will pause execution until it is read)
+				   	Process 02: wc -l < PIPE_NAME (reads from PIPE_NAME, which received data from other process)
+				   Since inter-process communication is possible, we can even share data between diferent shells, users etc.
