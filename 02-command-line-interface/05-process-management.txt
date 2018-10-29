@@ -1,0 +1,64 @@
+procps package
+
+	"procps" package contains the common tool used to manage process
+
+	Obs.: use -dpkg -L procps (debian based distributions)
+	       or -rpm -ql procps (red hat)
+	       to list all tools provided by this package
+
+
+Uptime and load averages
+
+	uptime		-> shows for how much time the system is up, but also the load average of the last 1, 5 and 15 minutes
+			   Rule of thumb: The load average must be below the number of cores available. e.g:
+				For a single core, values should be less than 1
+				For dual core, values should be less than 2
+				etc...
+
+			   The data for the command comes from /proc file system:
+
+				/proc/uptime:  How long system is up and how long it is idle
+				/proc/loadavg: Load averages and number of processes running
+
+
+Background tasks
+
+	jobs		-> lists running jobs
+			   the job containing the + sign is the currently selected job
+	COMMAND &	-> automatically puts COMMAND to run on background
+			   if COMMAND had started without "&", it is possible to put it on background following the 2 steps below:
+				 pressing CTRL + Z, which will cause the job to pause, select it and return control to the shell
+				 running "bg" will put the selected job in the background 
+	fg		-> foregrounds the currently selected job
+	fg ID		-> foregrounds the job owner of the ID
+	bg		-> backgrounds the currently selected job
+	bg ID		-> backgrounds the job owner of the ID
+
+
+Managing process
+
+	ps		-> lists running process of the current shell
+	ps -l		-> lists running process in the long-listing format
+	ps -f		-> lists running process in the full format. Presents even the options executed with the command that started the process
+	ps -ef		-> lists all running process in the full format
+	pgrep CMD	-> lists processes ids of the running CMD. It's a shortcut to ps -f | grep CMD
+	
+	kill PID	-> sends the terminate signal (SIGTERM, -term, -15) to the process represented by the process id PID
+	pkill CMD	-> sends the terminate signal to the running process CMD. It's a shortcut to kill $(pgrep CMD)
+	killall CMD	-> when pgrep returns more than one PID, killall can be used to send signals to all returned processes ids
+
+	Obs.: ps is commonly used in conjunction with grep to filter the listed process
+	      some processes does not respond to SIGTERM. SIGKILL (-9) can be used instead
+
+
+Monitoring processes
+
+	top		-> presents an interactive monitor of machine and process resource usage sorted by CPU usage, updating the data after each 3 seconds
+	top -n 1	-> presents only one iteration of machine and process resource usage
+	top
+	> l		-> toggle on/off load average information (comes from uptime)
+	> t		-> toggle on/off tasks information
+	> m		-> toggle on/off memory information
+	> f		-> presents a page to (de)select fields to display. It can also be used to select the sorting field, selecting the field with "S" key
+	> r		-> asks for the id of the process to be reniced (alter priority of running process)
+	> k		-> asks for the id of the process to be killed
