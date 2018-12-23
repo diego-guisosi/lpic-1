@@ -1,0 +1,41 @@
+Basics
+
+	Text		plain text
+	Multipliers 	. * ?
+	Anchors		^ $		(^ begining of the line		$ end of the line)
+	\b		word boundary (it can be the beginning of the line, a space, a new line, an hiffen etc.)
+	\s		space
+
+	[A-Z]		Range between A to Z (capital letters only)
+	EXP{1,2}	EXP must be present (in sequence) minimum of 1 and maximum of 2 times
+	EXP?		EXP is optional. Can be present or not
+	EXP{2}		EXP must be present (in sequence) exactly twice
+		
+
+Tools
+
+	grep TEXT FILE			-> Searches FILE for the given TEXT
+	grep -i TeXt FILE		-> Searches FILE for TeXt (ignore case)
+	grep -e	EXP FILE		-> Searches FILE for the given expression EXP. -e can be used more than once to add multiple expressions
+	grep -v EXP FILE		-> Searches FILE for anything other than the expression EXP
+	grep -ve '^#' -ve '^$' FILE	-> Presents FILE contents without comments or blank lines
+	grep -E EXP FILE		-> Interprets EXP as enhanced regular expression (accepts complex regex) and searches FILE according to it
+
+	sed EXP FILE			-> Stream Editor applies the expression command EXP to FILE, displaying the result on standard output
+	sed -i EXP FILE			-> Stream Editor applies the expression EXP to FILE, efectivelly modifying the FILE (in-place edit)
+	sed -i '/^#/d; /^$/d' FILE	-> Modifies FILE, removing both comments and blank lines
+
+
+Scripts (Moving regular expressions into scripts)
+
+	#!/usr/bin/perl
+	print "Enter a valid UK postcode... ";				# Prints to standard output the provided message
+	$pcode = <STDIN>;						# Creates pcode variable and assigns value entered in standard input to it
+	chomp($pcode);							# Removes special characters from pcode (as new lines for instance)
+	$pcode = uc $pcode;						# Converts pcode to upper case
+	$pattern = '^[A-Z]{1,2}[0-9]{1,2}[A-Z]?\s[0-9][A-Z]{2}$';	# Creates pattern variable and assigns the regular expression to it
+	if ($pcode =~ /$pattern/){					# If pcode matches against the regular expression
+		print "We can deliver to: $pcode \n";			# Prints to standard output the provided message
+	else {								# Else
+		print "We cannot find the postcode $pcode \n";		# Prints to standard output the provided message
+	}
